@@ -1,26 +1,31 @@
 export interface OPTIONS { 
-     requestUrl: string,
+    requestUrl: string,
     appName: string,
-    pv?:boolean,
+    pv?: boolean,
+    title?: string,
+    eventCore?: boolean, // 页面点击-是否采集点击事件
+    eventUnload?: boolean, // 页面卸载-是否在页面卸载时采集页面状态信息
+    performanceCore?: boolean, // 性能数据-是否采集静态资源、接口的相关数据
+    performanceFirstResource?: boolean, // 性能数据-是否采集首次进入页面的数据(ps: tcp连接耗时,HTML加载完成时间,首次可交互时间)
 }
 export interface emitOptiosn { 
     type: string,
-    subType:string
+    subType: string,
 }
 
 export interface PV_OPTIONS { 
     url: string, //当前url,
     refer: string, //上层url, 从何而来，
     action: number|string,//页面加载来源方式
-    width?: number,
-    height?:number
+    size?: string
+    title?: string,
 }
 
 export interface DATA_OPTIONS { 
     type: string,
     subType: string,
     uuid: string |number,
-    data:PV_OPTIONS
+    data:Record<string,any>
 }
 
 // enum action_type {

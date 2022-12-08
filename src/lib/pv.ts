@@ -1,5 +1,6 @@
 import { OPTIONS, PV_OPTIONS } from "../type";
-import { emit, getUUid } from "./base";
+import { emit } from "./base";
+import { getUUid } from "./utils";
 
 /*
 PV/UV:PV(page view)，即页面浏览量或点击量。
@@ -15,36 +16,30 @@ reload - 网页通过“重新加载”按钮或者location.reload()方法加载
 back_forward - 网页通过“前进”或“后退”按钮加载
 reserved - 任何其他来源的加载
 #
-
-
-pvHashtag 是否监听hash变化
 */
 
-
-
 const init = (options: OPTIONS) => { 
-    if (options.pv) {
-        let pvObj: PV_OPTIONS = {
-        url: "",
-        refer: "",
-        action: ""
-            };
-        // 页面点击量
-        pvObj.url = window.location.href; // 当前路由
-        pvObj.refer = document.referrer; // 从何而来
-        pvObj.action = window.performance.navigation.type;
-        pvObj.width = document.body.clientWidth; //页面宽度
-        pvObj.height = document.body.clientHeight //页面高度
+    if (!options.pv) return;
+    // 如果option.title为空,则等待框架处理document.title,延迟17ms
+    // 为什么是17ms?  一秒60Hz是基准,平均1Hz是17毫秒,只要出来了页面那就有 document.title
 
-        emit({
+        setTimeout(() => { 
+              // 页面点击量
+            emit({
             type:'behavior',
             subType: 'pv',
             uuid: getUUid(),
-            data: { ...pvObj}
+            data: {
+                url: window.location.href, // 当前路由
+                refer: document.referrer,// 从何而来
+                action: window.performance.navigation.type,
+                size: `${window.screen.width}*${window.screen.height}`,
+                title : options.title || document.title               
+            }
         })
-    }
+        }, options.title ? 0 : 17)  
+    
+    
 }
 
-
-
-export default {init};
+export default { init };

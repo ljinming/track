@@ -9,19 +9,20 @@
 
 import axios from "axios"
 import { DATA_OPTIONS } from "../type"
+import { getUUid } from "./utils";
 
-//in
+// 当前应用ID,在整个页面生命周期内不变,单页应用路由变化也不会改变,加载SDK时创建,且只创建一次
+const baseUUid = getUUid();
 
 
  const emit =(_options:DATA_OPTIONS)=>{ 
-     console.log('----d', _options)
-     axios.post('http://localhost:8000/behavior', { ..._options }).then(res => { 
-         console.log('===4',res)
-     })
+     console.log('--emit--d', _options)
+    //  axios.post('http://localhost:8000/behavior/insert', { ..._options }).then(res => { 
+    //      console.log('===4',res)
+    //  })
+ 
  }
 
-function getUUid (){ 
-    return new Date().getTime()
-}
 
-export  {emit,getUUid}
+
+export  {emit,baseUUid}

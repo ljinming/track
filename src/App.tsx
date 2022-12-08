@@ -12,9 +12,12 @@ function App() {
   const location = window.location;
   useEffect(() => {
     webtracing.init({
-      requestUrl: "http://locathost:3010",
+      requestUrl: "http://locathost:3010", //数据发送到该接口
       appName: "testpage1",
-      pv: true,
+      pv: false,
+      eventCore: true,
+      performanceCore: true,
+      performanceFirstResource: true,
     });
   }, []);
 
